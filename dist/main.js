@@ -937,8 +937,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 
 
+//? **`` The main displayed number
 const display = document.querySelector('.display');
 
+//? **`` The initial display number value
 display.innerText = 0;
 
 
@@ -963,27 +965,26 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const clicker = document.querySelector('.clicker');
-const resetButton = document.querySelector('.reset-button');
-const autoIncrement = document.querySelector('.auto-increment');
-
+//? **`` The logic that adds numbers when you click and updates the local stored number dynamically
 function clickIncrement() {
-  clicker.addEventListener('click', () => {
+  document.querySelector('.clicker').addEventListener('click', () => {
     _dom_manipulation__WEBPACK_IMPORTED_MODULE_0__.display.innerText++;
     (0,_functions__WEBPACK_IMPORTED_MODULE_1__.setStoredDisplayCount)();
   });
 }
 
+//? **`` Resets the number to 'zero', stops the interval counting, clears the local storage
 function resetGame() {
-  resetButton.addEventListener('click', () => {
+  document.querySelector('.reset-button').addEventListener('click', () => {
     clearInterval(_functions__WEBPACK_IMPORTED_MODULE_1__.intervalID);
     localStorage.clear();
     _dom_manipulation__WEBPACK_IMPORTED_MODULE_0__.display.innerText = 0;
   });
 }
 
+//? **`` Turns on the auto counting, doesn't allow you to click again if its already activated, adds to local storage that the auto incrementor is 'true'
 function turnOnAutoIncrement() {
-  autoIncrement.addEventListener('click', () => {
+  document.querySelector('.auto-increment').addEventListener('click', () => {
     if (!!localStorage.getItem('autoIncrement')) {
       return;
     }
@@ -1015,8 +1016,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+//? **`` This is declaring the returned ID created by the 'setInterval()' function
 let intervalID;
 
+//? **`` This will load any locally stored saved progress
 function savedStats() {
   if (localStorage.getItem('displayCount')) {
     getStoredDisplayCount();
@@ -1026,18 +1029,22 @@ function savedStats() {
   }
 }
 
+//? **`` Adds the display count to local storage
 function setStoredDisplayCount() {
   localStorage.setItem('displayCount', _dom_manipulation__WEBPACK_IMPORTED_MODULE_0__.display.innerText);
 }
 
+//? **`` Gets the display count from local storage
 function getStoredDisplayCount() {
   _dom_manipulation__WEBPACK_IMPORTED_MODULE_0__.display.innerText = localStorage.getItem('displayCount');
 }
 
+//? **`` Sets the 'auto increment' value in local storage to 'true'
 function setStoredAutoIncrement() {
   localStorage.setItem('autoIncrement', 'true');
 }
 
+//? **`` The interval counter, sets the returned ID into it's own variable that was initially declared above, it counts up the displayed number, it updates the local storage display count number
 function intervalLogic() {
   intervalID = setInterval(() => {
     _dom_manipulation__WEBPACK_IMPORTED_MODULE_0__.display.innerText++;

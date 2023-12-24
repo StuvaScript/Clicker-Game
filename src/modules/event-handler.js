@@ -8,27 +8,26 @@ import {
 
 export { clickIncrement, resetGame, turnOnAutoIncrement };
 
-const clicker = document.querySelector('.clicker');
-const resetButton = document.querySelector('.reset-button');
-const autoIncrement = document.querySelector('.auto-increment');
-
+//? **`` The logic that adds numbers when you click and updates the local stored number dynamically
 function clickIncrement() {
-  clicker.addEventListener('click', () => {
+  document.querySelector('.clicker').addEventListener('click', () => {
     display.innerText++;
     setStoredDisplayCount();
   });
 }
 
+//? **`` Resets the number to 'zero', stops the interval counting, clears the local storage
 function resetGame() {
-  resetButton.addEventListener('click', () => {
+  document.querySelector('.reset-button').addEventListener('click', () => {
     clearInterval(intervalID);
     localStorage.clear();
     display.innerText = 0;
   });
 }
 
+//? **`` Turns on the auto counting, doesn't allow you to click again if its already activated, adds to local storage that the auto incrementor is 'true'
 function turnOnAutoIncrement() {
-  autoIncrement.addEventListener('click', () => {
+  document.querySelector('.auto-increment').addEventListener('click', () => {
     if (!!localStorage.getItem('autoIncrement')) {
       return;
     }
