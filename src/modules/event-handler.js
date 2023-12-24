@@ -1,5 +1,10 @@
 import { display } from './dom-manipulation';
-import { setLocalStorage } from './functions';
+import {
+  intervalID,
+  intervalLogic,
+  setStoredAutoIncrement,
+  setStoredDisplayCount,
+} from './functions';
 
 export { clickIncrement, resetGame, turnOnAutoIncrement };
 
@@ -10,21 +15,24 @@ const autoIncrement = document.querySelector('.auto-increment');
 function clickIncrement() {
   clicker.addEventListener('click', () => {
     display.innerText++;
-    setLocalStorage();
+    setStoredDisplayCount();
   });
 }
 
 function resetGame() {
   resetButton.addEventListener('click', () => {
+    clearInterval(intervalID);
+    localStorage.clear();
     display.innerText = 0;
-    setLocalStorage();
   });
 }
 
-//todo **`` Figure out how to get this working for the auto increment
-
 function turnOnAutoIncrement() {
   autoIncrement.addEventListener('click', () => {
-    setInterval(display.innerText++, 1000);
+    if (!!localStorage.getItem('autoIncrement')) {
+      return;
+    }
+    setStoredAutoIncrement();
+    intervalLogic();
   });
 }

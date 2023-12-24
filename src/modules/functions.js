@@ -1,16 +1,39 @@
 import { display } from './dom-manipulation';
-export { setLocalStorage, savedStats };
+import { turnOnAutoIncrement } from './event-handler';
+export {
+  setStoredDisplayCount,
+  savedStats,
+  setStoredAutoIncrement,
+  intervalLogic,
+  intervalID,
+};
+
+let intervalID;
 
 function savedStats() {
   if (localStorage.getItem('displayCount')) {
-    getLocalStorage();
+    getStoredDisplayCount();
+  }
+  if (localStorage.getItem('autoIncrement')) {
+    intervalLogic();
   }
 }
 
-function setLocalStorage() {
+function setStoredDisplayCount() {
   localStorage.setItem('displayCount', display.innerText);
 }
 
-function getLocalStorage() {
+function getStoredDisplayCount() {
   display.innerText = localStorage.getItem('displayCount');
+}
+
+function setStoredAutoIncrement() {
+  localStorage.setItem('autoIncrement', 'true');
+}
+
+function intervalLogic() {
+  intervalID = setInterval(() => {
+    display.innerText++;
+    setStoredDisplayCount();
+  }, 1000);
 }

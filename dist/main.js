@@ -970,22 +970,25 @@ const autoIncrement = document.querySelector('.auto-increment');
 function clickIncrement() {
   clicker.addEventListener('click', () => {
     _dom_manipulation__WEBPACK_IMPORTED_MODULE_0__.display.innerText++;
-    (0,_functions__WEBPACK_IMPORTED_MODULE_1__.setLocalStorage)();
+    (0,_functions__WEBPACK_IMPORTED_MODULE_1__.setStoredDisplayCount)();
   });
 }
 
 function resetGame() {
   resetButton.addEventListener('click', () => {
+    clearInterval(_functions__WEBPACK_IMPORTED_MODULE_1__.intervalID);
+    localStorage.clear();
     _dom_manipulation__WEBPACK_IMPORTED_MODULE_0__.display.innerText = 0;
-    (0,_functions__WEBPACK_IMPORTED_MODULE_1__.setLocalStorage)();
   });
 }
 
-//todo **`` Figure out how to get this working for the auto increment
-
 function turnOnAutoIncrement() {
   autoIncrement.addEventListener('click', () => {
-    setInterval(_dom_manipulation__WEBPACK_IMPORTED_MODULE_0__.display.innerText++, 1000);
+    if (!!localStorage.getItem('autoIncrement')) {
+      return;
+    }
+    (0,_functions__WEBPACK_IMPORTED_MODULE_1__.setStoredAutoIncrement)();
+    (0,_functions__WEBPACK_IMPORTED_MODULE_1__.intervalLogic)();
   });
 }
 
@@ -1000,25 +1003,46 @@ function turnOnAutoIncrement() {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   intervalID: () => (/* binding */ intervalID),
+/* harmony export */   intervalLogic: () => (/* binding */ intervalLogic),
 /* harmony export */   savedStats: () => (/* binding */ savedStats),
-/* harmony export */   setLocalStorage: () => (/* binding */ setLocalStorage)
+/* harmony export */   setStoredAutoIncrement: () => (/* binding */ setStoredAutoIncrement),
+/* harmony export */   setStoredDisplayCount: () => (/* binding */ setStoredDisplayCount)
 /* harmony export */ });
 /* harmony import */ var _dom_manipulation__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./dom-manipulation */ "./src/modules/dom-manipulation.js");
+/* harmony import */ var _event_handler__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./event-handler */ "./src/modules/event-handler.js");
 
 
+
+
+let intervalID;
 
 function savedStats() {
   if (localStorage.getItem('displayCount')) {
-    getLocalStorage();
+    getStoredDisplayCount();
+  }
+  if (localStorage.getItem('autoIncrement')) {
+    intervalLogic();
   }
 }
 
-function setLocalStorage() {
+function setStoredDisplayCount() {
   localStorage.setItem('displayCount', _dom_manipulation__WEBPACK_IMPORTED_MODULE_0__.display.innerText);
 }
 
-function getLocalStorage() {
+function getStoredDisplayCount() {
   _dom_manipulation__WEBPACK_IMPORTED_MODULE_0__.display.innerText = localStorage.getItem('displayCount');
+}
+
+function setStoredAutoIncrement() {
+  localStorage.setItem('autoIncrement', 'true');
+}
+
+function intervalLogic() {
+  intervalID = setInterval(() => {
+    _dom_manipulation__WEBPACK_IMPORTED_MODULE_0__.display.innerText++;
+    setStoredDisplayCount();
+  }, 1000);
 }
 
 
@@ -1108,6 +1132,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _modules_functions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules/functions */ "./src/modules/functions.js");
 /* harmony import */ var _normalize_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./normalize.css */ "./src/normalize.css");
 /* harmony import */ var _style_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./style.css */ "./src/style.css");
+
+
 
 
 
