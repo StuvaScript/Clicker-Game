@@ -1,5 +1,6 @@
 import {
   clickIncrement,
+  multiply10Percent,
   resetGame,
   turnOnAutoIncrement,
 } from './modules/event-handler';
@@ -13,3 +14,4 @@ savedStats();
 clickIncrement();
 turnOnAutoIncrement();
 resetGame();
+multiply10Percent();

@@ -2,11 +2,12 @@ import { display } from './dom-manipulation';
 import {
   intervalID,
   intervalLogic,
+  multiplier,
   setStoredAutoIncrement,
   setStoredDisplayCount,
 } from './functions';
 
-export { clickIncrement, resetGame, turnOnAutoIncrement };
+export { clickIncrement, resetGame, turnOnAutoIncrement, multiply10Percent };
 
 //? **`` The logic that adds numbers when you click and updates the local stored number dynamically
 function clickIncrement() {
@@ -16,12 +17,13 @@ function clickIncrement() {
   });
 }
 
-//? **`` Resets the number to 'zero', stops the interval counting, clears the local storage
+//? **`` Resets the number to 'zero', stops the interval counting, clears the local storage, resets multiplier to 1000
 function resetGame() {
   document.querySelector('.reset-button').addEventListener('click', () => {
     clearInterval(intervalID);
     localStorage.clear();
     display.innerText = 0;
+    // multiplier = 1000;
   });
 }
 
@@ -34,4 +36,12 @@ function turnOnAutoIncrement() {
     setStoredAutoIncrement();
     intervalLogic();
   });
+}
+
+function multiply10Percent() {
+  document
+    .querySelector('.multiply-10-percent')
+    .addEventListener('click', () => {
+      // multiplier = 10000;
+    });
 }

@@ -4,4 +4,4 @@ export { display };
 const display = document.querySelector('.display');
 
 //? **`` The initial display number value
-display.innerText = 0;
+// display.innerText = 0;

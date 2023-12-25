@@ -941,7 +941,7 @@ __webpack_require__.r(__webpack_exports__);
 const display = document.querySelector('.display');
 
 //? **`` The initial display number value
-display.innerText = 0;
+// display.innerText = 0;
 
 
 /***/ }),
@@ -955,6 +955,7 @@ display.innerText = 0;
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   clickIncrement: () => (/* binding */ clickIncrement),
+/* harmony export */   multiply10Percent: () => (/* binding */ multiply10Percent),
 /* harmony export */   resetGame: () => (/* binding */ resetGame),
 /* harmony export */   turnOnAutoIncrement: () => (/* binding */ turnOnAutoIncrement)
 /* harmony export */ });
@@ -973,12 +974,13 @@ function clickIncrement() {
   });
 }
 
-//? **`` Resets the number to 'zero', stops the interval counting, clears the local storage
+//? **`` Resets the number to 'zero', stops the interval counting, clears the local storage, resets multiplier to 1000
 function resetGame() {
   document.querySelector('.reset-button').addEventListener('click', () => {
     clearInterval(_functions__WEBPACK_IMPORTED_MODULE_1__.intervalID);
     localStorage.clear();
     _dom_manipulation__WEBPACK_IMPORTED_MODULE_0__.display.innerText = 0;
+    // multiplier = 1000;
   });
 }
 
@@ -991,6 +993,14 @@ function turnOnAutoIncrement() {
     (0,_functions__WEBPACK_IMPORTED_MODULE_1__.setStoredAutoIncrement)();
     (0,_functions__WEBPACK_IMPORTED_MODULE_1__.intervalLogic)();
   });
+}
+
+function multiply10Percent() {
+  document
+    .querySelector('.multiply-10-percent')
+    .addEventListener('click', () => {
+      // multiplier = 10000;
+    });
 }
 
 
@@ -1006,12 +1016,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   intervalID: () => (/* binding */ intervalID),
 /* harmony export */   intervalLogic: () => (/* binding */ intervalLogic),
+/* harmony export */   multiplier: () => (/* binding */ multiplier),
 /* harmony export */   savedStats: () => (/* binding */ savedStats),
 /* harmony export */   setStoredAutoIncrement: () => (/* binding */ setStoredAutoIncrement),
 /* harmony export */   setStoredDisplayCount: () => (/* binding */ setStoredDisplayCount)
 /* harmony export */ });
 /* harmony import */ var _dom_manipulation__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./dom-manipulation */ "./src/modules/dom-manipulation.js");
-/* harmony import */ var _event_handler__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./event-handler */ "./src/modules/event-handler.js");
 
 
 
@@ -1019,13 +1029,16 @@ __webpack_require__.r(__webpack_exports__);
 //? **`` This is declaring the returned ID created by the 'setInterval()' function
 let intervalID;
 
+//? **`` This is the interval multiplier, initially set to 1000(ms)
+let multiplier = 1000;
+
 //? **`` This will load any locally stored saved progress
 function savedStats() {
   if (localStorage.getItem('displayCount')) {
     getStoredDisplayCount();
   }
   if (localStorage.getItem('autoIncrement')) {
-    intervalLogic();
+    intervalLogic(multiplier);
   }
 }
 
@@ -1044,12 +1057,35 @@ function setStoredAutoIncrement() {
   localStorage.setItem('autoIncrement', 'true');
 }
 
+//todo **`` Keep updating the interval logic
+
 //? **`` The interval counter, sets the returned ID into it's own variable that was initially declared above, it counts up the displayed number, it updates the local storage display count number
+
+let lastTime = null;
+let totalTime = 0;
+let displayValue = 0;
+_dom_manipulation__WEBPACK_IMPORTED_MODULE_0__.display.innerText = displayValue;
+const displayPerMillisecond = 0.001;
+let monkeyMultiplierPerMillisecond = 0.003;
+
 function intervalLogic() {
   intervalID = setInterval(() => {
-    _dom_manipulation__WEBPACK_IMPORTED_MODULE_0__.display.innerText++;
+    const currentTime = Date.now();
+    if (lastTime === null) {
+      lastTime = currentTime;
+    }
+    const deltaTime = currentTime - lastTime;
+    totalTime += deltaTime;
+    lastTime = currentTime;
+    updateGame(deltaTime, totalTime);
     setStoredDisplayCount();
-  }, 1000);
+  }, 1000 / 60);
+}
+
+function updateGame(deltaTime, totalTime) {
+  displayValue += displayPerMillisecond * deltaTime;
+  displayValue += monkeyMultiplierPerMillisecond * deltaTime;
+  _dom_manipulation__WEBPACK_IMPORTED_MODULE_0__.display.innerText = displayValue.toFixed(2);
 }
 
 
@@ -1150,6 +1186,7 @@ __webpack_require__.r(__webpack_exports__);
 (0,_modules_event_handler__WEBPACK_IMPORTED_MODULE_0__.clickIncrement)();
 (0,_modules_event_handler__WEBPACK_IMPORTED_MODULE_0__.turnOnAutoIncrement)();
 (0,_modules_event_handler__WEBPACK_IMPORTED_MODULE_0__.resetGame)();
+(0,_modules_event_handler__WEBPACK_IMPORTED_MODULE_0__.multiply10Percent)();
 
 })();
 
